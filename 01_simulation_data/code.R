@@ -8,6 +8,7 @@ log_normal_dist_ｘ<-exp(normal_dist_x)
 x<-log_normal_dist_ｘ
 
 
+#ヒストグラムを出力
 hist(x)
 
 png("./output/hist_break_10.png")
@@ -25,9 +26,6 @@ hist_x_break_5 <-hist(x,
      breaks = 5,main="histgram of x break 5")
 dev.off()
 
-# output_dir_path <- here::here("output")
-# file_path <- here::here(output_dir_path,"hist_break_5.png")
-# ggsave(file = file_path, plot = hist)
 
 density_x <-density(x)
 density_x_bw_20 <-density(x,bw=20)
@@ -53,7 +51,6 @@ lines(density_x_bw_10,col="red",lwd=2)
 lines(density_x_bw_20,col="yellow",lwd=2)
 legend("topright", legend = c("blue: bw=default","red: bw=10","yellow: bw=20"))
 dev.off()
-#densityのbwのnrd0は望ましくないデフォルト,SJが適している宋
 
 png("./output/hist_50_density.png")
 hist(x, freq = FALSE, breaks = 50,
@@ -115,14 +112,10 @@ for(i in 1:100){
   }  
 }
 df <- data.frame(x,y)
-View(df)
 probit_reg <- glm(df$y~df$x,family=binomial(probit))
-#限界効果の形にする必要がある
+#限界効果の形にする
 x_b <-predict(probit_reg) 
-x_b
-mean(x_b)
 f_y <-dnorm(mean(x_b)) 
-f_y
 marginal_effect_on_average <- f_y*coef(probit_reg)
 marginal_effect_on_average
 
@@ -147,7 +140,6 @@ df<-data.frame(y,x,z,x_2,x_3,x_4,x_5,
                x_9,x_10,x_11,x_12,
                x_13,x_14,x_15,x_16,x_17,x_18
                ,x_19,x_20,error)
-View(df)
 
 bootstrap_sample <- rsample::bootstraps(df,
                                         times=5)
